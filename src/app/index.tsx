@@ -80,7 +80,6 @@ const generatePagesRoutes = () => {
         key={path} 
         path={`/${routePath}`} 
         element={
-          <PageLayout>
             <Suspense fallback={
               <div className="flex items-center justify-center min-h-[200px]">
                 <div className="text-center">
@@ -91,7 +90,6 @@ const generatePagesRoutes = () => {
             }>
               <LazyPageComponent />
             </Suspense>
-          </PageLayout>
         } 
       />
     );
