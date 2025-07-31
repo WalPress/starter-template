@@ -34,23 +34,18 @@ import { lazy, Suspense } from 'react';
 /*                             Internal Dependency                            */
 /* -------------------------------------------------------------------------- */
 
-import NotFoundPage from './(pages)/not-found';
-import HomePage from './(pages)/home';
-import PageLayout from './layout';
+import NotFoundPage from './pages/not-found';
+import HomePage from './pages/home';
 
-// Dynamically import all page files from the (pages) directory with lazy loading
-// Supports nested folders and dynamic parameters
-const pageModules = import.meta.glob('./(pages)/**/*.tsx');
+// Load modules dynamically for lazy loading (including subdirectories)
+const pageModules = import.meta.glob('./pages/**/*.tsx');
 
 const generatePagesRoutes = () => {
   const routes = [];
   
+  console.log("pageModules found:", Object.keys(pageModules));
+  
   for (const path in pageModules) {
-    // Extract the route path from file path
-    // Examples:
-    // './(pages)/about.tsx' -> 'about'
-    // './(pages)/blog/[id].tsx' -> 'blog/:id'
-    // './(pages)/docs/[...slug].tsx' -> 'docs/*'
     let routePath = path
       .replace('./(pages)/', '')
       .replace('.tsx', '')
@@ -58,6 +53,7 @@ const generatePagesRoutes = () => {
     
     // Skip special pages that are handled separately
     if (routePath === 'home' || routePath === 'not-found' || routePath === '') {
+      console.log("Skipping special page:", routePath);
       continue;
     }
     
@@ -66,7 +62,8 @@ const generatePagesRoutes = () => {
       .replace(/\[\.\.\.(.+)\]/g, '*')        // [...slug] -> *
       .replace(/\[(.+)\]/g, ':$1');          // [id] -> :id
     
-    // Create lazy component
+    const realRoutePath = routePath.split("/pages/")[1]
+    // Create lazy component - pageModules[path] is already a function that returns a Promise
     const LazyPageComponent = lazy(() => 
       pageModules[path]().then((module: any) => ({ 
         default: module.default 
@@ -78,7 +75,7 @@ const generatePagesRoutes = () => {
     routes.push(
       <Route 
         key={path} 
-        path={`/${routePath}`} 
+        path={`/${realRoutePath}`} 
         element={
             <Suspense fallback={
               <div className="flex items-center justify-center min-h-[200px]">
@@ -94,6 +91,7 @@ const generatePagesRoutes = () => {
       />
     );
   }
+  console.log("Generated routes:", routes.length, "from pageModules:", routes)
   
   return routes;
 };
@@ -101,7 +99,6 @@ const generatePagesRoutes = () => {
 const AppRoutes = () => (
   <Routes>
     <Route index element={<HomePage />} />
-
     {/* Dynamically generated pages from (pages) folder */}
     {generatePagesRoutes()}
 
@@ -109,8 +106,4 @@ const AppRoutes = () => (
   </Routes>
 )
 
-function App() {
-  return <AppRoutes />;
-}
-
-export default App;
+export default AppRoutes;

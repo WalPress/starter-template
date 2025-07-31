@@ -10,7 +10,7 @@ import React from 'react';
 
 const PageLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
-        <div>
+        <div className="flex flex-col items-center justify-center h-screen h-full">
             {children}
         </div>
     )
