@@ -1,19 +1,20 @@
 /* -------------------------------------------------------------------------- */
 /*                             External Dependency                            */
 /* -------------------------------------------------------------------------- */
-import React from 'react';
+import React from "react";
 
 /* -------------------------------------------------------------------------- */
 /*                             Internal Dependency                            */
 /* -------------------------------------------------------------------------- */
 
-
 const PageLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    return (
-        <div className="flex flex-col items-center justify-center h-screen h-full">
-            {children}
-        </div>
-    )
-}
+  return (
+    <section className="tiptap">
+      <div className="notion-like-editor-content p-16">
+        {children}
+      </div>
+    </section>
+  );
+};
 
-export default PageLayout
+export default PageLayout;

@@ -16,7 +16,7 @@ const NotFoundPage: React.FC = () => {
       <p className="text-muted-foreground mb-6">
         The page you are looking for does not exist.
       </p>
-      <Link 
+      <Link
         to="/" 
         className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity"
       >
