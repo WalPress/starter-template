@@ -7,10 +7,11 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     headers:{
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Content-Security-Policy': "frame-ancestors *",
-      'Cross-Origin-Opener-Policy': 'same-origin',
+      // CSP disabled for development - iframe loading
+      // 'Cross-Origin-Embedder-Policy': 'require-corp',
+      // 'Content-Security-Policy': "frame-ancestors *; frame-src *",
+      // 'Cross-Origin-Opener-Policy': '*',
       'Access-Control-Allow-Origin': '*'
-      }
     }
+  }
 })
